@@ -39,9 +39,9 @@ def save_output_to_pdf(parent):
                 file_path += '.pdf'
             pdf.output(file_path, "F")          # Save the PDF
             messagebox.showinfo(message='PDF created!')
-            clear_list(parent)
+            clear_image_list(parent)
 
-def clear_list(parent):
+def clear_image_list(parent):
     global image_list
     image_list = []
     file_names_var = StringVar(value=image_list)
@@ -59,7 +59,7 @@ def display_ui():
 
     ttk.Button(main_frame, text="Select Image(s)", command=lambda: select_images(main_frame)).grid(column=1, row=1, sticky=(N, S, E, W))
     Listbox(main_frame).grid(column=1, row=2)
-    ttk.Button(main_frame, text="Clear", command=lambda: clear_list(main_frame)).grid(column=1, row=3, sticky=(N, S, E, W))
+    ttk.Button(main_frame, text="Clear", command=lambda: clear_image_list(main_frame)).grid(column=1, row=3, sticky=(N, S, E, W))
     ttk.Button(main_frame, text="Save to PDF", command=lambda: save_output_to_pdf(main_frame)).grid(column=1, row=4, sticky=(N, S, E, W))
     
     for child in main_frame.winfo_children():

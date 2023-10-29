@@ -17,7 +17,13 @@ def set_listbox_contents(parent):
         file_name = Path(file_name).name
         file_names.append(file_name)
     file_names_var = StringVar(value=file_names)
-    Listbox(parent, height=10, listvariable=file_names_var).grid(column=1, row=2, sticky=(N, S, E, W))
+
+    listbox = Listbox(parent, height=8, listvariable=file_names_var)
+    listbox.grid(column=1, row=2, sticky='N, S, E, W')
+    scrollbar = Scrollbar(parent)
+    scrollbar.grid(column=1, row=2, sticky='N, S, E')
+    listbox.config(yscrollcommand=scrollbar.set)
+    scrollbar.config(command=listbox.yview)
 
 def select_images(parent):
     get_list_of_images()
@@ -45,27 +51,28 @@ def clear_image_list(parent):
     global image_list
     image_list = []
     file_names_var = StringVar(value=image_list)
-    Listbox(parent, listvariable=file_names_var).grid(column=1, row=2, sticky='N, S, E, W')
+
+    listbox = Listbox(parent, listvariable=file_names_var)
+    listbox.grid(column=1, row=2, sticky='N, S, E, W')
 
 def display_ui():
     window = tk.Tk()
     window.title('Image to PDF Converter')
     window.geometry('300x400+30+30')
 
+    # Center contents of window
+    window.grid_rowconfigure(0, weight=1)
+    window.grid_columnconfigure(0, weight=1)
+
     main_frame = tk.Frame(window)
     main_frame.grid(column=0, row=0)
-    window.columnconfigure(0, weight=1)
-    window.rowconfigure(0, weight=1)
 
     tk.Button(main_frame, text="Select Image(s)", command=lambda: select_images(main_frame)).grid(column=1, row=1, sticky='N, S, E, W')
-    scrollbar = tk.Scrollbar(main_frame)
-    scrollbar.grid(column=1, row=2) # sticky='N, S'
-    listbox = tk.Listbox(main_frame, height=8, yscrollcommand=scrollbar.set)
-    listbox.grid(column=1, row=2) # sticky='N, S, E, W'
-    scrollbar.config(command=listbox.yview)
+    set_listbox_contents(main_frame)
     tk.Button(main_frame, text="Clear", command=lambda: clear_image_list(main_frame)).grid(column=1, row=3, sticky='N, S, E, W')
     tk.Button(main_frame, text="Save to PDF", command=lambda: save_output_to_pdf(main_frame)).grid(column=1, row=4, sticky='N, S, E, W')
-    
+
+    # Apply padding to all children of main_frame
     for child in main_frame.winfo_children():
         child.grid_configure(padx=5, pady=5)
 

@@ -1,5 +1,6 @@
 from tkinter import *
-from tkinter import ttk
+import tkinter as tk
+# from tkinter import ttk
 from tkinter import messagebox
 from tkinter import filedialog
 from fpdf import FPDF
@@ -48,19 +49,23 @@ def clear_image_list(parent):
     Listbox(parent, height=10, listvariable=file_names_var).grid(column=1, row=2, sticky=(N, S, E, W))
 
 def display_ui():
-    window = Tk()
+    window = tk.Tk()
     window.title('Image to PDF Converter')
     window.geometry('300x400+30+30')
 
-    main_frame = ttk.Frame(window, padding='10', borderwidth=2, relief='solid')
+    main_frame = tk.Frame(window) # padding='10', borderwidth=2, relief='solid'
     main_frame.grid(column=0, row=0)
     window.columnconfigure(0, weight=1)
     window.rowconfigure(0, weight=1)
 
-    ttk.Button(main_frame, text="Select Image(s)", command=lambda: select_images(main_frame)).grid(column=1, row=1, sticky=(N, S, E, W))
-    Listbox(main_frame).grid(column=1, row=2)
-    ttk.Button(main_frame, text="Clear", command=lambda: clear_image_list(main_frame)).grid(column=1, row=3, sticky=(N, S, E, W))
-    ttk.Button(main_frame, text="Save to PDF", command=lambda: save_output_to_pdf(main_frame)).grid(column=1, row=4, sticky=(N, S, E, W))
+    tk.Button(main_frame, text="Select Image(s)", command=lambda: select_images(main_frame)).grid(column=1, row=1, sticky='N, S, E, W')
+    scrollbar = tk.Scrollbar(main_frame)
+    scrollbar.grid(column=1, row=2, sticky='N, S')
+    listbox = tk.Listbox(main_frame, height=8, yscrollcommand=scrollbar.set)
+    listbox.grid(column=1, row=2, sticky='N, S, E, W')
+    scrollbar.config(command=listbox.yview)
+    tk.Button(main_frame, text="Clear", command=lambda: clear_image_list(main_frame)).grid(column=1, row=3, sticky='N, S, E, W')
+    tk.Button(main_frame, text="Save to PDF", command=lambda: save_output_to_pdf(main_frame)).grid(column=1, row=4, sticky='N, S, E, W')
     
     for child in main_frame.winfo_children():
         child.grid_configure(padx=5, pady=5)

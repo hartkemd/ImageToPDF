@@ -50,10 +50,7 @@ def save_output_to_pdf(parent):
 def clear_image_list(parent):
     global image_list
     image_list = []
-    file_names_var = StringVar(value=image_list)
-
-    listbox = Listbox(parent, listvariable=file_names_var)
-    listbox.grid(column=1, row=2, sticky='N, S, E, W')
+    set_listbox_contents(parent)
 
 def display_ui():
     window = tk.Tk()
